@@ -6,8 +6,10 @@ import 'package:flutter/widgets.dart';
 import 'package:uac_mcf_project/HomeScreen.dart';
 import 'package:uac_mcf_project/connexion.dart';
 import 'package:uac_mcf_project/constante/TextWithStyle.dart';
+import 'package:uac_mcf_project/homeConnexion.dart';
 import 'package:uac_mcf_project/inscription.dart';
 import 'package:http/http.dart' as http;
+import 'package:uac_mcf_project/pinCodeVerificationScreen.dart';
 
 import 'myIdentity.dart';
 
@@ -51,7 +53,7 @@ class _Inscription extends State<Inscription> {
         child: new Scaffold(
             body: new SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.all(25.0),
+                padding: const EdgeInsets.fromLTRB(25.0, 25.0, 25.0, 10.0),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -213,9 +215,9 @@ class _Inscription extends State<Inscription> {
                                 },
                               ),
                               SizedBox(height: 20.0,),
-                              Container(
-                                child: Center(
-                                  child: TextWithStyle('En continuant, vous acceptez les conditions générales de UAC Job',)
+                              Center(
+                                child: Container(
+                                  child: Center(child: TextWithStyle('En continuant, vous acceptez les conditions générales de UAC Jobs',))
                                 ),
                               ),
                               SizedBox(
@@ -232,19 +234,9 @@ class _Inscription extends State<Inscription> {
                                     onPressed: () {
                                       if (_formKey.currentState.validate()) {
                                         if (password == password2) {
-                                          userRegistration();
+                                          registerData();
                                         } else {
-                                          showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return SimpleDialog(
-                                                  contentPadding: EdgeInsets.all(20.0),
-                                                  children: [
-                                                    TextWithStyle(
-                                                        'Les deux mots de passe sont non conforme')
-                                                  ],
-                                                );
-                                              });
+                                          snackBar('Les deux mots de passe ne sont pas identiques');
                                         }
                                       } else {
                                         print('Error');
@@ -266,7 +258,7 @@ class _Inscription extends State<Inscription> {
                                     'Déjà de compte?',
                                     color: Colors.black,
                                   ),
-                                  new FlatButton(
+                                  new TextButton(
                                       onPressed: versPageConnexion,
                                       child: new TextWithStyle(
                                         'Se connecter',
@@ -349,7 +341,7 @@ class _Inscription extends State<Inscription> {
                 : FlatButton(
               child: new TextWithStyle("OK"),
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (_) => Connexion(userType: widget.userType)));
               },
             )
           ],
@@ -357,5 +349,66 @@ class _Inscription extends State<Inscription> {
       },
     );
   }
+
+  void registerData(){
+
+    String url = 'http://192.168.8.104:8000/api/register';
+    Map response;
+    
+    http.post(Uri.parse(url),
+    headers: {
+      'Accept': 'application/json'
+    },
+    body: {
+      'email': email,
+      'password': password,
+      'name': 'null',
+      'state': 'inactif',
+      'userType': widget.userType
+
+    }).then((value) => {
+      response = jsonDecode(value.body),
+
+      if(response['success'] == true){
+        
+        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => PinCodeVerificationScreen(email, response['data']['code'])))
+      } else{
+        _showDialog("Vous êtes déjà inscrits. Veuillez vous connecter.", "Se connecter")
+      }
+    });
+  }
+
+void _showDialog(String msg, String msgButton){
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: new Text(msg),
+          actions: <Widget>[
+            TextButton(
+              child: new Text(msgButton),
+              onPressed: () {
+                Navigator.push(context, 
+                MaterialPageRoute(builder: (_) => Connexion(userType: 'etudiant')));
+              },
+            ),
+          ],
+        );
+      },
+    );
+     
+  }
+
+  // snackBar Widget
+  snackBar(String message) {
+    return ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: Duration(seconds: 5),
+      ),
+    );
+  }
+
 
 }

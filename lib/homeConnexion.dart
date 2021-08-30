@@ -11,15 +11,15 @@ import 'homePage.dart';
 
 
 class HomeConnexion extends StatefulWidget {
-  HomeConnexion({Key key, @required this.nom, @required this.prenom, @required this.ville, @required this.codePostal, @required this.statut, @required this.telephone, @required this.dateNaissance, @required this.userType}) : super(key: key);
-  String nom;
-  String prenom;
-  String ville;
-  String codePostal;
-  String statut;
-  String telephone;
-  String dateNaissance;
-  String userType;
+  HomeConnexion({Key key}) : super(key: key);
+  String nom = "Dah";
+  String prenom = "Isaac";
+  String ville = "AZOVE";
+  String codePostal = "33";
+  String statut = "Analyste Programmeur";
+  String telephone ="94170440";
+  String dateNaissance = "11-11-2021";
+  String userType = "Recruteur";
 
   @override
   _MyStatefulWidgetState createState() => _MyStatefulWidgetState();
@@ -141,7 +141,7 @@ class _MyStatefulWidgetState extends State<HomeConnexion> with SingleTickerProvi
                                 child: new Container(
                                   height: MediaQuery.of(context).size.width / 2.5,
                                   width: MediaQuery.of(context).size.width / 2.5,
-                                  child: new Image.asset("assets/Website-Banner-FR-1200x400.png", fit: BoxFit.fill),
+                                  child: new Image.asset("assets/400097300582_222717.jpg", fit: BoxFit.fill),
                                 ),
                               ),
                               new Container(
@@ -184,8 +184,8 @@ class _MyStatefulWidgetState extends State<HomeConnexion> with SingleTickerProvi
                 Card(
                   //elevation: 10.0,
                   child: Container(
-                    height: 220,
-                    width: 220,
+                    height: 200,
+                    width: 200,
                     child: new Image.asset(
                       "assets/400149200417_6190.jpg",
                       fit: BoxFit.fill,
@@ -220,7 +220,7 @@ class _MyStatefulWidgetState extends State<HomeConnexion> with SingleTickerProvi
                     Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context){
                       return new MyIdentity(userType: widget.userType,);}));
                   },
-                  child: TextWithStyle('Inscription', color: Colors.white, fontWeight: FontWeight.bold,),
+                  child: TextWithStyle('Editer mon profil', color: Colors.white, fontWeight: FontWeight.bold,),
                 ),
               ],
 
@@ -265,7 +265,8 @@ class _MyStatefulWidgetState extends State<HomeConnexion> with SingleTickerProvi
         subMenuBackgroundColor: Colors.grey.shade100,
         divisionColor: Colors.grey,
         header: Container(
-          color: Colors.white24,
+          padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+          color: Colors.green,
           height: MediaQuery.of(context).size.height * 0.25,
           child: Center(
               child: Column(
@@ -277,7 +278,7 @@ class _MyStatefulWidgetState extends State<HomeConnexion> with SingleTickerProvi
                   SizedBox(
                     height: 50,
                   ),
-                  Text("JOBS UAC", style: TextStyle(color: Colors.black,))
+                  Text("JOBS UAC", style: TextStyle(color: Colors.white,))
                 ],
               )),
         ),

@@ -31,10 +31,8 @@ class DetailActuality extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               SizedBox(height: 60.0,),
-              new TextWithStyle(rssItem.title, fontSize: 30.0,),
-              SizedBox(height: 30.0,),
               new Card(
-                elevation: 10.0,
+               // elevation: 10.0,
                 child: new Container(
                   width: MediaQuery.of(context).size.width / 1.2,
                   child: new Image.network(rssItem.enclosure.url, fit: BoxFit.fill,),
@@ -49,6 +47,8 @@ class DetailActuality extends StatelessWidget {
                   ],
                 ),
               ),
+              new TextWithStyle(rssItem.title, fontSize: 25.0,),
+              SizedBox(height: 30.0,),
               new TextWithStyle(rssItem.description)
             ],
           ),

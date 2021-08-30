@@ -1,11 +1,14 @@
 import 'package:floating_action_bubble/floating_action_bubble.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:multilevel_drawer/multilevel_drawer.dart';
 import 'package:uac_mcf_project/connexion.dart';
 import 'package:uac_mcf_project/constante/TextWithStyle.dart';
 import 'package:uac_mcf_project/detailActuality.dart';
+import 'package:uac_mcf_project/inscription.dart';
+import 'package:uac_mcf_project/statut_inscription.dart';
 import 'package:webfeed/domain/rss_feed.dart';
 import 'package:webfeed/domain/rss_item.dart';
 
@@ -53,6 +56,7 @@ class _HomeScreenState extends State<HomeScreen>  with SingleTickerProviderState
 
 
 
+
   @override
   void initState(){
 
@@ -65,6 +69,11 @@ class _HomeScreenState extends State<HomeScreen>  with SingleTickerProviderState
     _animation = Tween<double>(begin: 0, end: 1).animate(curvedAnimation);
 
     super.initState();
+
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
 
 
   }
@@ -167,7 +176,13 @@ class _HomeScreenState extends State<HomeScreen>  with SingleTickerProviderState
                   MLSubmenu(
                       onClick: () {
                         Navigator.of(context).pop();
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeScreen(rssFeed)));
+                        //Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeScreen(rssFeed)));
+                      },
+                      submenuContent: Text("Voir")),
+                  MLSubmenu(
+                      onClick: () {
+                        Navigator.of(context).pop();
+                        //Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeScreen(rssFeed)));
                       },
                       submenuContent: Text("Renseigner")),
                   MLSubmenu(onClick: () {}, submenuContent: Text("Supprimer")),
@@ -198,7 +213,7 @@ class _HomeScreenState extends State<HomeScreen>  with SingleTickerProviderState
               leading: Icon(Icons.notifications),
               content: Text("Blogs"),
               onClick: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeScreen(rssFeed)));
+                Navigator.pop(context);
               },
             ),
             MLMenuItem(
@@ -222,7 +237,7 @@ class _HomeScreenState extends State<HomeScreen>  with SingleTickerProviderState
           ],
         ),
 
-        body: ListView.builder(
+        body: widget.rssFeed.items.length != null ? ListView.builder(
 
             itemCount: widget.rssFeed.items.length,
             itemBuilder: (context, i){
@@ -285,7 +300,7 @@ class _HomeScreenState extends State<HomeScreen>  with SingleTickerProviderState
                       ),
                     )
               );
-            }),
+            }) : Chargement(),
 
         /**
          * menu vertical
@@ -299,11 +314,11 @@ class _HomeScreenState extends State<HomeScreen>  with SingleTickerProviderState
 
               // Floating action menu item
               Bubble(
-                title:"Etudiant",
+                title:"Connexion",
                 iconColor :Colors.white,
                 bubbleColor : Colors.green,
                 icon:Icons.edit,
-                titleStyle:TextStyle(fontSize: 16 , color: Colors.white),
+                titleStyle:TextStyle(fontSize: 16 , color: Colors.white, fontWeight: FontWeight.bold),
                 onPress: () {
                   Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) => Connexion(userType: 'Etudiant')));
                   _animationController.reverse();
@@ -311,18 +326,18 @@ class _HomeScreenState extends State<HomeScreen>  with SingleTickerProviderState
               ),
               // Floating action menu item
               Bubble(
-                title:"Recruteur",
+                title:"Incription",
                 iconColor :Colors.white,
                 bubbleColor : Colors.green,
                 icon:Icons.people,
-                titleStyle:TextStyle(fontSize: 16 , color: Colors.white),
+                titleStyle:TextStyle(fontSize: 16 , color: Colors.white, fontWeight: FontWeight.bold),
                 onPress: () {
-                  Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) => Connexion(userType: 'Recruteur',)));
+                  Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) => StatutInscription()));
                   _animationController.reverse();
                 },
               ),
               //Floating action menu item
-              Bubble(
+              /*Bubble(
                 title:"Animateur",
                 iconColor :Colors.white,
                 bubbleColor : Colors.green,
@@ -332,24 +347,26 @@ class _HomeScreenState extends State<HomeScreen>  with SingleTickerProviderState
                   Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) => Connexion(userType: 'Animateur',)));
                   _animationController.reverse();
                 },
-              ),
+              ),*/
             ],
 
             // animation controller
             animation: _animation,
 
             // On pressed change animation state
-            onPress: () => _animationController.isCompleted
-                ? _animationController.reverse()
-                : _animationController.forward(),
-
+            onPress: () {
+              _animationController.isCompleted
+                  ? _animationController.reverse()
+                  : _animationController.forward();
+            },
             // Floating Action button Icon color
             iconColor: Colors.white,
 
             // Flaoting Action button Icon
 
-            iconData: _animationController.isDismissed  ? Icons.menu_outlined : Icons.close,
+            iconData: Icons.menu_outlined,
             backGroundColor: Colors.green,
+
           ),
 
         /*bottomNavigationBar: Container(

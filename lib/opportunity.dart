@@ -46,7 +46,7 @@ class DetailOpportunity extends StatefulWidget {
           child: new Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              SizedBox(height: 60.0,),
+              SizedBox(height: 20.0,),
               new TextWithStyle(widget.titleOpportunity),
               SizedBox(height: 30.0,),
               Row(
@@ -60,7 +60,7 @@ class DetailOpportunity extends StatefulWidget {
 
                 child: new Container(
                   width: MediaQuery.of(context).size.width / 1.2,
-                  child: new Image.asset("assets/Website-Banner-FR-1200x400.png", fit: BoxFit.fill,),
+                  child: new Image.asset("assets/400097300582_222717.jpg", fit: BoxFit.fill,),
                 ),
               ),
               FlatButton(

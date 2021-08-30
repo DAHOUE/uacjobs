@@ -3,9 +3,12 @@ import 'package:flutter/services.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:uac_mcf_project/HomeScreen.dart';
 import 'package:uac_mcf_project/connexion.dart';
+import 'package:uac_mcf_project/homeConnexion.dart';
 import 'package:uac_mcf_project/parser.dart';
 import 'package:webfeed/domain/rss_feed.dart';
 import 'package:webfeed/domain/rss_item.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 import 'homePage.dart';
 
@@ -37,12 +40,24 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
   final introKey = GlobalKey<IntroductionScreenState>();
 
   RssFeed rssFeed;
+  read()async{
+    final prefs = await SharedPreferences.getInstance();
+    final key = 'token';
+    final value = prefs.get(key) ?? 0;
+    print(value);
+    if(value != '0'){
+      Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => HomeConnexion()));
+    }
+  }
+
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    read();
     parser();
+    
   }
 
   void _onIntroEnd(context) {

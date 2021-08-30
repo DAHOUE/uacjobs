@@ -354,7 +354,7 @@ class _MyCompany extends State<MyCompany> {
                                       if (_formKey.currentState.validate()) {
                                         Navigator.push(context,
                                             new MaterialPageRoute(builder: (BuildContext context) {
-                                              return HomeConnexion(nom: widget.nom, prenom: widget.prenom, codePostal: widget.codePostal,dateNaissance: date, telephone: widget.telephone, ville: widget.ville, statut: widget.statut, userType: widget.userType,);
+                                              return HomeConnexion();
                                             }));
                                       } else {
                                         print('Error');
